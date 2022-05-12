@@ -2,17 +2,16 @@
 
 namespace App\Form;
 
-use App\Entity\Field;
+use App\Entity\Day;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FieldType extends AbstractType
+class DayType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('code')
             ->add('name')
         ;
     }
@@ -20,7 +19,7 @@ class FieldType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Field::class,
+            'data_class' => Day::class,
         ]);
     }
 }

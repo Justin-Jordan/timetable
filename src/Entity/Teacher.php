@@ -27,6 +27,11 @@ class Teacher
      */
     private $speciality;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Dispense::class, mappedBy="teacher", cascade={"persist", "remove"})
+     */
+    private $dispense;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +57,23 @@ class Teacher
     public function setSpeciality(?string $speciality): self
     {
         $this->speciality = $speciality;
+
+        return $this;
+    }
+
+    public function getDispense(): ?Dispense
+    {
+        return $this->dispense;
+    }
+
+    public function setDispense(Dispense $dispense): self
+    {
+        // set the owning side of the relation if necessary
+        if ($dispense->getTeacher() !== $this) {
+            $dispense->setTeacher($this);
+        }
+
+        $this->dispense = $dispense;
 
         return $this;
     }

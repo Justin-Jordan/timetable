@@ -30,25 +30,16 @@ class Field
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Student::class, mappedBy="field", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Planification::class, mappedBy="field")
      */
-    private $students;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Level::class, mappedBy="field")
-     */
-    private $levels;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Speciality::class, mappedBy="field", orphanRemoval=true)
-     */
-    private $specialities;
+    private $planifications;
 
     public function __construct()
     {
         $this->students = new ArrayCollection();
         $this->levels = new ArrayCollection();
         $this->specialities = new ArrayCollection();
+        $this->planifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -81,86 +72,29 @@ class Field
     }
 
     /**
-     * @return Collection<int, Student>
+     * @return Collection<int, Planification>
      */
-    public function getStudents(): Collection
+    public function getPlanifications(): Collection
     {
-        return $this->students;
+        return $this->planifications;
     }
 
-    public function addStudent(Student $student): self
+    public function addPlanification(Planification $planification): self
     {
-        if (!$this->students->contains($student)) {
-            $this->students[] = $student;
-            $student->setField($this);
+        if (!$this->planifications->contains($planification)) {
+            $this->planifications[] = $planification;
+            $planification->setField($this);
         }
 
         return $this;
     }
 
-    public function removeStudent(Student $student): self
+    public function removePlanification(Planification $planification): self
     {
-        if ($this->students->removeElement($student)) {
+        if ($this->planifications->removeElement($planification)) {
             // set the owning side to null (unless already changed)
-            if ($student->getField() === $this) {
-                $student->setField(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Level>
-     */
-    public function getLevels(): Collection
-    {
-        return $this->levels;
-    }
-
-    public function addLevel(Level $level): self
-    {
-        if (!$this->levels->contains($level)) {
-            $this->levels[] = $level;
-            $level->addField($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLevel(Level $level): self
-    {
-        if ($this->levels->removeElement($level)) {
-            $level->removeField($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Speciality>
-     */
-    public function getSpecialities(): Collection
-    {
-        return $this->specialities;
-    }
-
-    public function addSpeciality(Speciality $speciality): self
-    {
-        if (!$this->specialities->contains($speciality)) {
-            $this->specialities[] = $speciality;
-            $speciality->setField($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSpeciality(Speciality $speciality): self
-    {
-        if ($this->specialities->removeElement($speciality)) {
-            // set the owning side to null (unless already changed)
-            if ($speciality->getField() === $this) {
-                $speciality->setField(null);
+            if ($planification->getField() === $this) {
+                $planification->setField(null);
             }
         }
 

@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\LevelRepository;
+use App\Repository\ScheduleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=LevelRepository::class)
+ * @ORM\Entity(repositoryClass=ScheduleRepository::class)
  */
-class Level
+class Schedule
 {
     /**
      * @ORM\Id
@@ -20,12 +20,17 @@ class Level
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="time")
      */
-    private $code;
+    private $BeginAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Planification::class, mappedBy="level")
+     * @ORM\Column(type="time")
+     */
+    private $EndAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Planification::class, mappedBy="schedule")
      */
     private $planifications;
 
@@ -39,14 +44,26 @@ class Level
         return $this->id;
     }
 
-    public function getCode(): ?string
+    public function getBeginAt(): ?\DateTimeInterface
     {
-        return $this->code;
+        return $this->BeginAt;
     }
 
-    public function setCode(string $code): self
+    public function setBeginAt(\DateTimeInterface $BeginAt): self
     {
-        $this->code = $code;
+        $this->BeginAt = $BeginAt;
+
+        return $this;
+    }
+
+    public function getEndAt(): ?\DateTimeInterface
+    {
+        return $this->EndAt;
+    }
+
+    public function setEndAt(\DateTimeInterface $EndAt): self
+    {
+        $this->EndAt = $EndAt;
 
         return $this;
     }
@@ -63,7 +80,7 @@ class Level
     {
         if (!$this->planifications->contains($planification)) {
             $this->planifications[] = $planification;
-            $planification->setLevel($this);
+            $planification->setSchedule($this);
         }
 
         return $this;
@@ -73,11 +90,15 @@ class Level
     {
         if ($this->planifications->removeElement($planification)) {
             // set the owning side to null (unless already changed)
-            if ($planification->getLevel() === $this) {
-                $planification->setLevel(null);
+            if ($planification->getSchedule() === $this) {
+                $planification->setSchedule(null);
             }
         }
 
         return $this;
+    }
+    
+    public function getHour() {
+        return $this->BeginAt->format('H:m') . " - " . $this->EndAt->format('H:m');
     }
 }

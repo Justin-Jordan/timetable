@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Planification index{% endblock %}
+
+{% block body %}
+    <h1>Planification index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for planification in planifications %}
+            <tr>
+                <td>{{ planification.id }}</td>
+                <td>
+                    <a href="{{ path('app_planification_show', {'id': planification.id}) }}">show</a>
+                    <a href="{{ path('app_planification_edit', {'id': planification.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_planification_new') }}">Create new</a>
+{% endblock %}

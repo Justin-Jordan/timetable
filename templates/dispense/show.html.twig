@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dispense{% endblock %}
+
+{% block body %}
+    <h1>Dispense</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ dispense.id }}</td>
+            </tr>
+            <tr>
+                <th>BeginAt</th>
+                <td>{{ dispense.beginAt ? dispense.beginAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>StartTime</th>
+                <td>{{ dispense.startTime }}</td>
+            </tr>
+            <tr>
+                <th>EndTime</th>
+                <td>{{ dispense.EndTime }}</td>
+            </tr>
+            <tr>
+                <th>Day</th>
+                <td>{{ dispense.day }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_dispense_index') }}">back to list</a>
+
+    <a href="{{ path('app_dispense_edit', {'id': dispense.id}) }}">edit</a>
+
+    {{ include('dispense/_delete_form.html.twig') }}
+{% endblock %}

@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\LevelRepository;
+use App\Repository\DayRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=LevelRepository::class)
+ * @ORM\Entity(repositoryClass=DayRepository::class)
  */
-class Level
+class Day
 {
     /**
      * @ORM\Id
@@ -20,12 +20,12 @@ class Level
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="string", length=255)
      */
-    private $code;
+    private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Planification::class, mappedBy="level")
+     * @ORM\OneToMany(targetEntity=Planification::class, mappedBy="day")
      */
     private $planifications;
 
@@ -39,14 +39,14 @@ class Level
         return $this->id;
     }
 
-    public function getCode(): ?string
+    public function getName(): ?string
     {
-        return $this->code;
+        return $this->name;
     }
 
-    public function setCode(string $code): self
+    public function setName(string $name): self
     {
-        $this->code = $code;
+        $this->name = $name;
 
         return $this;
     }
@@ -63,7 +63,7 @@ class Level
     {
         if (!$this->planifications->contains($planification)) {
             $this->planifications[] = $planification;
-            $planification->setLevel($this);
+            $planification->setDay($this);
         }
 
         return $this;
@@ -73,8 +73,8 @@ class Level
     {
         if ($this->planifications->removeElement($planification)) {
             // set the owning side to null (unless already changed)
-            if ($planification->getLevel() === $this) {
-                $planification->setLevel(null);
+            if ($planification->getDay() === $this) {
+                $planification->setDay(null);
             }
         }
 

@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\LevelRepository;
+use App\Repository\RoomRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=LevelRepository::class)
+ * @ORM\Entity(repositoryClass=RoomRepository::class)
  */
-class Level
+class Room
 {
     /**
      * @ORM\Id
@@ -20,12 +20,17 @@ class Level
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="string", length=255)
      */
     private $code;
 
     /**
-     * @ORM\OneToMany(targetEntity=Planification::class, mappedBy="level")
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $building;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Planification::class, mappedBy="room", orphanRemoval=true)
      */
     private $planifications;
 
@@ -51,6 +56,18 @@ class Level
         return $this;
     }
 
+    public function getBuilding(): ?string
+    {
+        return $this->building;
+    }
+
+    public function setBuilding(?string $building): self
+    {
+        $this->building = $building;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Planification>
      */
@@ -63,7 +80,7 @@ class Level
     {
         if (!$this->planifications->contains($planification)) {
             $this->planifications[] = $planification;
-            $planification->setLevel($this);
+            $planification->setRoom($this);
         }
 
         return $this;
@@ -73,8 +90,8 @@ class Level
     {
         if ($this->planifications->removeElement($planification)) {
             // set the owning side to null (unless already changed)
-            if ($planification->getLevel() === $this) {
-                $planification->setLevel(null);
+            if ($planification->getRoom() === $this) {
+                $planification->setRoom(null);
             }
         }
 
