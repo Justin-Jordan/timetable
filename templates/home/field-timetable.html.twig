@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Field index
+{% endblock %}
+
+{% block body %}
+	<h1>Emploie de temps</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Horaire/Jour</th>
+				{% for day in days %}
+					<th>{{ day.name }}</th>
+				{% endfor %}
+			</tr>
+		</thead>
+		<tbody>
+			{% for tabledata in timetable['data'] %}
+				<tr>
+					{% for element in tabledata %}
+						<td>{{ element }}</td>
+					{% endfor %}
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="4">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}

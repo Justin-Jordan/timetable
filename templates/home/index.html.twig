@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Application de création d'emploi de temps
+{% endblock %}
+
+{% block body %}
+
+	<main>
+		<h1>Bienvenue sur la plateforme de Création d'emploi de temps de la faculté des sciences</h1>
+
+		<h3>Veuillez choisir une filière</h3>
+
+		<ul>
+			{% for field in fields %}
+				<h3>{{ field.name }}</h3>
+				{% for level in levels %}
+					<li>
+						<a href="{{ path('app_field_timetable', {'id': field.id, 'level': level.id}) }}">
+							niveau
+							{{ level.code }}</a>
+					</li>
+				{% endfor %}
+			{% endfor %}
+		</ul>
+	</main>
+{% endblock %}
